@@ -5,7 +5,7 @@ const Banner = ({ appName, token }) => {
     return null;
   }
   return (
-    <div className="banner">
+    <div className="banner blue">
       <div className="container">
         <h1 className="logo-font">
           {appName.toLowerCase()}
