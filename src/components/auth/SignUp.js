@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Redirect } from "react-router-dom";
 import { signUp } from "../../store/actions/authAction";
+import ListErrors from './ListErrors';
 
 class SignUp extends Component {
   state = {
@@ -49,16 +50,11 @@ class SignUp extends Component {
             <label htmlFor="firstName">User name</label>
             <input type="text" id='username' onChange={this.handleChange} />
           </div>
-          {/* <div className="input-field">
-            <label htmlFor="lastName">Last Name</label>
-            <input type="text" id='lastName' onChange={this.handleChange} />
-          </div> */}
-          <div className="input-field">
+
+          <div className="input-field center">
             <button className="btn green lighten-1 z-depth-0">Sign Up</button>
             <div className="red-text center">
-              {auth.emailErrors ? <p>Email {auth.emailErrors}</p> : null}
-              {auth.passwordErrors ? <p>Password {auth.passwordErrors}</p> : null}
-              {auth.usernameErrors ? <p>Username {auth.usernameErrors}</p> : null}
+              <ListErrors errors={this.props.authError}/>
             </div>
           </div>
         </form>
@@ -70,7 +66,8 @@ class SignUp extends Component {
 const mapStateToProps = state => {
   console.log(state);
   return {
-    auth: state.auth
+    auth: state.auth,
+    authError: state.auth.authError
   }
 }
 

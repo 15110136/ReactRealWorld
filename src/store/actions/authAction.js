@@ -11,9 +11,14 @@ export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS'
 
 const API_ROOT = 'https://conduit.productionready.io/api';
 
-export const signIn = (credentials) => dispatch => {
-  // console.log(credentials);
+export const setCurrentUser = decoded => {
+  return {
+    type: SET_CURRENT_USER,
+    payload: decoded
+  }
+}
 
+export const signIn = (credentials) => dispatch => {
   axios.post(`${API_ROOT}/users/login`, credentials)
     .then(res => {
       const {
@@ -22,13 +27,9 @@ export const signIn = (credentials) => dispatch => {
       localStorage.setItem('token', token);
       setAuthToken(token);
       const decoded = jwt_decode(token);
-      // console.log(decoded);
-      dispatch({
-        type: SET_CURRENT_USER,
-        payload: decoded
-      });
+      dispatch(setCurrentUser(decoded));
     })
-    .catch(err => {
+    .catch(err => {      
       dispatch({
         type: LOGIN_FAILURE,
         payload: err.response.data
@@ -36,37 +37,19 @@ export const signIn = (credentials) => dispatch => {
     });
 }
 
-// export const signIn = (credentials) => {
-//   return (dispatch, getState, {
-//     getFirebase
-//   }) => {
-//     const firebase = getFirebase();
-//     firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
-//       .then(() => {
-//         dispatch({
-//           type: 'LOGIN_SUCCESS'
-//         });
-//       })
-//       .catch((err) => {
-//         dispatch({
-//           type: 'LOGIN_ERROR',
-//           err
-//         });
-//       })
-//   }
-// }
+export const currentUser=(token)=>dispatch=>{
+  setAuthToken(token);
+  const decoded = jwt_decode(token);
+  dispatch(setCurrentUser(decoded));
+}
 
-export const signOut = () => {
-  return (dispatch, getState, {
-    getFirebase
-  }) => {
-    const firebase = getFirebase();
-    firebase.auth().signOut().then(() => {
-      dispatch({
-        type: 'SIGNOUT_SUCCESS'
-      })
-    });
-  }
+export const signOut = () => dispatch => {
+  localStorage.removeItem('token');
+  setAuthToken(null);
+  dispatch({
+    type:'LOGOUT_SUCCESS',
+    payload:null
+  });
 }
 
 export const signUp = user => dispatch => {
@@ -84,35 +67,7 @@ export const signUp = user => dispatch => {
       console.log(err.response.data.errors);
       dispatch({
         type: SIGN_UP_ERROR,
-        payload: err.response.data.errors
+        payload: err.response.data
       });
     });
 }
-
-// export const signUp = (newUser) => {
-//   return (dispatch, getState, {
-//     getFirebase,
-//     getFirestore
-//   }) => {
-//     const firebase = getFirebase();
-//     const firestore = getFirestore();
-
-//     firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
-//       .then((res) => {
-//         return firestore.collection('users').doc(res.user.uid).set({
-//           firstName: newUser.firstName,
-//           lastName: newUser.lastName,
-//           initials: newUser.firstName[0] + newUser.lastName[0]
-//         });
-//       }).then(() => {
-//         dispatch({
-//           type: 'SIGNUP_SUCCESS'
-//         })
-//       }).catch(err => {
-//         dispatch({
-//           type: 'SIGNUP_ERROR',
-//           err
-//         });
-//       });
-//   }
-// }

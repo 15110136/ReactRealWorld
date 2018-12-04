@@ -21,22 +21,17 @@ class ProjectList extends React.Component {
   }
 
   render() {
-    const { projects, page,size } = this.props;
-    // console.log(page);
+    const { projects, page } = this.props;
 
-    let startIndex = 0 + size * (page - 1);
-    let endIndex = 2 + size * (page - 1) + 1;
+    let startIndex = 10 * (page - 1);
+    let endIndex = 10 * ((page - 1) + 1);
     // console.log(startIndex, endIndex);
-
-
     return (
       <div className="project-list section">
         {projects && projects.slice(startIndex, endIndex).map(project => {
           if (project) {
-            // console.log(project);
-
             return (
-              <div className="card z-depth-0 project-summary" key={project.id}>
+              <div className="card z-depth-0 project-summary" key={project.slug}>
                 <Link to={`/project/${project.id}`}>
                   <ProjectSummary project={project} />
                 </Link>
@@ -44,6 +39,8 @@ class ProjectList extends React.Component {
                 <button className="right btn-floating btn-medium waves-effect waves-light cyan" onClick={() => this.handleUpdate(project)}><i className="material-icons"></i></button>
               </div>
             )
+          }else{
+            return null
           }
         })}
       </div>

@@ -1,8 +1,21 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { signIn } from "../../store/actions/authAction";
+import { signIn, currentUser } from "../../store/actions/authAction";
 import { Redirect } from "react-router-dom";
+import ListErrors from './ListErrors';
+
 class SignIn extends Component {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+       
+    }
+    if (localStorage.getItem('token')) {
+      this.props.currentUser(localStorage.getItem('token'));
+    }
+  }
+  
   state = {
     email: '',
     password: ''
@@ -38,10 +51,10 @@ class SignIn extends Component {
             <label htmlFor="password">Password</label>
             <input type="password" id='password' onChange={this.handleChange} />
           </div>
-          <div className="input-field">
+          <div className="input-field center">
             <button className="btn blue lighten-1 z-depth-0">Login</button>
             <div className="red-text center">
-              {authError ? <p>{authError}</p> : null}
+              <ListErrors errors={authError}/>
             </div>
           </div>
         </form>
@@ -51,6 +64,8 @@ class SignIn extends Component {
 }
 
 const mapStateToProps = (state) => {
+  // console.log(state);
+
   return {
     authError: state.auth.authError,
     auth: state.auth
@@ -59,7 +74,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signIn: (credentials) => dispatch(signIn(credentials))
+    signIn: (credentials) => dispatch(signIn(credentials)),
+    currentUser: (token) => dispatch(currentUser(token))
   }
 }
 

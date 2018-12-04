@@ -1,9 +1,5 @@
 const initState = {
-  projects: [
-    { id: '1', title: 'help me find peach', content: 'blah blah blah' },
-    { id: '2', title: 'collect all the stars', content: 'blah blah blah' },
-    { id: '3', title: 'egg hunt with yoshi', content: 'blah blah blah' }
-  ]
+  projects: []
 }
 
 const projectReducer = (state = initState, action) => {
@@ -22,9 +18,12 @@ const projectReducer = (state = initState, action) => {
       return state;
     case 'LOAD_ARTICLES_SUCCESS':
       console.log('load success');
-      return state;
+      return {
+        ...state,
+        projects:action.payload
+      }
     case 'LOAD_ARTICLES_FAILURE':
-      console.log('load failure');
+      console.log(action.payload);
       return state;
     default:
       return state;
