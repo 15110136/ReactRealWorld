@@ -6,6 +6,7 @@ import ProjectDetail from './components/projects/ProjectDetail';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import CreateProject from './components/projects/CreateProject';
+import Profile from './components/Profile/Profile';
 class App extends Component {
   render() {
     return (
@@ -18,6 +19,7 @@ class App extends Component {
             <Route path='/signin' component={SignIn} />
             <Route path='/signup' component={SignUp} />
             <Route path='/create' component={CreateProject} />
+            <Route path='/:username' component={Profile}/>
           </Switch>
         </div>
       </BrowserRouter>

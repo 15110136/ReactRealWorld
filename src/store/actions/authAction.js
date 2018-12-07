@@ -39,8 +39,12 @@ export const signIn = (credentials) => dispatch => {
 
 export const currentUser=(token)=>dispatch=>{
   setAuthToken(token);
-  const decoded = jwt_decode(token);
-  dispatch(setCurrentUser(decoded));
+  const auth='Token '.concat(token);
+  axios.get(`${API_ROOT}/user`,{headers:{Authorization: auth}})
+    .then(res=>{
+      dispatch(setCurrentUser(res.data.user));
+    })
+  
 }
 
 export const signOut = () => dispatch => {

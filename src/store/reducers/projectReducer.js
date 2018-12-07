@@ -20,11 +20,31 @@ const projectReducer = (state = initState, action) => {
       console.log('load success');
       return {
         ...state,
-        projects:action.payload
+        projects: action.payload
       }
     case 'LOAD_ARTICLES_FAILURE':
       console.log(action.payload);
       return state;
+    case 'ARTICLE_FAVORITED':
+      var a=state.projects.articles;
+      var b= action.payload.article;
+      // console.log(a);
+      for (const key in a) {
+        if (a.hasOwnProperty(key)) {
+          const element = a[key];
+          if(element.slug===b.slug){
+            element.favorited=true;
+            element.favoritesCount++;
+          }
+        }
+      }
+      return state;
+    case 'ARTICLE_UNFAVORITED':
+      return {
+        ...state,
+        projects: action.payload
+
+      }
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProject } from "../../store/actions/projectAction";
+// import { createProject } from "../../store/actions/projectAction";
 import { Redirect } from "react-router-dom";
 
 class CreateProject extends Component {
@@ -16,7 +16,7 @@ class CreateProject extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     // console.log(this.state);
-    this.props.createProject(this.state);
+    // this.props.createProject(this.state);
     this.props.history.push('/');
 
   }
@@ -52,7 +52,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createProject: (project) => dispatch(createProject(project))
+    // createProject: (project) => dispatch(createProject(project))
   }
 }
 

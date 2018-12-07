@@ -18,8 +18,6 @@ export class DashBoard extends Component {
   }
 
   onChange = (page) => {
-    console.log(page);
-    
     this.setState({
       currentPage: page
     });
@@ -27,10 +25,11 @@ export class DashBoard extends Component {
     this.props.getArticles(page,this.state.token)
   }
   componentDidMount(){
-    this.props.getArticles(1,this.state.token);
+    this.props.getArticles(this.state.currentPage,this.state.token);
   }
   render() {
-    var { projects, auth } = this.props;
+    var { projects, auth, articlesCount } = this.props;
+    
     if (!auth.isAuthenticated) return <Redirect to="/signin" />;
 
     return (
@@ -43,7 +42,7 @@ export class DashBoard extends Component {
             {/* <Notifications notifications={notifications} /> */}
           </div>
         </div>
-        <Pagination className="ant-pagination" total={100} onChange={this.onChange} defaultCurrent={1} />
+        <Pagination className="ant-pagination" total={articlesCount} onChange={this.onChange} defaultCurrent={1} />
       </div>
     );
   }
@@ -52,7 +51,8 @@ const mapStateToProps = state => {
   console.log(state);
   return {
     auth: state.auth,
-    projects:state.projects.projects.articles
+    projects:state.projects.projects.articles,
+    articlesCount:state.projects.projects.articlesCount
   };
 };
 
